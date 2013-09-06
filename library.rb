@@ -1,6 +1,6 @@
 class Book
   attr_reader :title, :author, :description
-  attr_accessor :status, :person, :time_out, :time_due, :year_published, :edition
+  attr_accessor :status, :person, :time_out, :time_due, :year_published, :edition, :scheduled
 
   # Creates an instance of the Book class
   #
@@ -10,6 +10,7 @@ class Book
   # year_published - optional String
   # edition - optional String
   # ratings - hash {username(Person) => rating(int)}
+  # scheduled - bool tells whether book has been scheduled for future checkout
   #
   # Examples
   #   book1 = Book.new("Moby Dick","Herman Melville")
@@ -24,14 +25,14 @@ class Book
 	@description = description
 	@person = nil
 	@ratings = {}
-	@has_extended = false;
+	@scheduled = false
   end
 
   # Give book a rating
   #
   # stars - integer number 1..5
   # person - Person object; person who submits review
-  # review - 
+  # review - String; written review of the book
   #
   def rate stars, person, review
   	if stars > 5
@@ -208,7 +209,7 @@ require 'csv'
   # Import books from .csv file
   def import 
   	File.open("books.csv").read.split("\n").each do |line|
-  		title, author, description, year_published, edition = line.split(" ")
+  		title, author, description, year_published, edition = line.split(",")
   		@books << Book.new(title, author, description, year_published, edition)
   	end
 
@@ -221,7 +222,7 @@ require 'csv'
 
   # Schedule future checkout for a book that is already checked out
   def schedule_checkout book, person, date
-  	if book.status == "Checked out"
+  	if book.status == "Checked out" && !book.scheduled
   		##check out book in person's name when date == Time.n
   	end
   end
