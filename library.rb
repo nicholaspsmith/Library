@@ -9,6 +9,7 @@ class Book
   # description - optional String
   # year_published - optional String
   # edition - optional String
+  # ratings - hash {username(Person) => rating(int)}
   #
   # Examples
   #   book1 = Book.new("Moby Dick","Herman Melville")
@@ -22,6 +23,36 @@ class Book
 	@status = "Available"
 	@description = description
 	@person = nil
+	@ratings = {}
+  end
+
+  # Give book a rating
+  #
+  # stars - integer number 1..5
+  # person - Person object; person who submits review
+  # review - 
+  #
+  def rate stars, person, review
+  	if stars > 5
+  		stars = 5
+  	elsif stars < 0
+  		stars = 0
+  	end
+  	@ratings[person] = [stars, review]
+  end
+
+  def ratings
+  	@ratings.each do |key, value|
+  		print "#{key.f_name} gave #{title} a rating of: "
+  		value[0].times do 
+  			print "*"
+  		end
+  		pring "\n"
+  		if value[1].length > 0
+  			puts "Review:"
+  			puts value[1]
+  		end
+  	end
   end
 end
 
@@ -179,6 +210,19 @@ require 'csv'
   		@books << Book.new(title, author, description, year_published, edition)
   	end
 
+  end
+
+  # Allow user to rate book
+  def rate book, stars, person, review=""
+  	book.rate stars, person, review
+  end
+
+  # Schedule future checkout for a book that is already checked out
+  def schedule_checkout book, person, date
+  end
+
+  # Extend time by one week if no one has scheduled a future check-out
+  def extend
   end
 end
 
