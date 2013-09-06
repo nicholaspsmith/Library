@@ -1,0 +1,25 @@
+library = Library.new
+
+
+moby_dick = Book.new("Moby Dick","Herman Melville","a book about a whale")
+bible = Book.new("The Bible","Various")
+
+nick = Person.new("Nick","Smith")
+
+library.check_out(moby_dick, nick)
+
+moby_dick = {:title => "Moby Dick", :author => "Herman Melville", :description => "", :date_checked_out => 09-06-2013, :checked_out_by => "Nicholas Smith"}
+
+library.add_book(pride_and_prejudice)
+
+library.check_in(moby_dick)
+
+library.check_status(moby_dick)
+# => "Checked out"
+
+library.check_books
+# => "Moby Dick checked out by Nick Smith"
+
+library.overdue_books
+# => "Practical Object Oriented Design in Ruby"
+
