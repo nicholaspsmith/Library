@@ -14,6 +14,7 @@ end
 
 class Person
 	attr_accessor :num_books
+	attr_reader :name
 
 	def initialize name
 		@name = name
@@ -44,16 +45,10 @@ class Library
   #
   #
   #
-  # create @people array that stores all people who may check out books
-  #
-  # Example
-  #   @people = ["Nick","Ami","Taylor"]
-  #
   def initialize
   	@books = []
   	@library = {}
-  	@checked_out = []
-  	@people = []
+  	@people = {}
   	populate
   	add_people
   end
@@ -74,10 +69,20 @@ class Library
 
   # Creates a bunch of people that can check out books
   def add_people
+  	persons = []
   	nick = Person.new("Nick")
   	mike = Person.new("Mike")
-  	@people.push(nick)
-  	@people.push(mike)
+  	persons << nick
+  	persons << mike
+  	persons.each do |obj|
+  		@people[obj.name] = obj
+  	end
+  end
+
+  def list_people
+  	@people.each do |key, value|
+  		puts key
+  	end
   end
 
 
@@ -102,22 +107,22 @@ class Library
   def list
   	puts "Available: "
   	@books.each do |book|
-  	  puts book.title
+  	  if book.status == "Available"
+  	    puts book.title
+  	  end
   	end
-  	if @books.length == 0
-  		puts "None"
-  	end
+
 
   	puts "Checked out: "
-  	@checked_out.each do |book|
-  	  puts book.title
+  	@books.each do |book|
+  	  if book.status != "Available"
+  	    puts book.title
+  	  end
   	end
-  	if @checked_out.length == 0
-  		puts "None"
-  	end
-
 
   end
+
+
   # Allow user to check out book in 1 week intervals
   # -not allow user to check out more than two books
   # at a time.
@@ -128,15 +133,17 @@ class Library
   #
   #
   #
-  def check_out title, person
+  def check_out title, name
   	book = @library[title]
+  	person = @people[name]
+  	
   	if (book.status == "Available")
   	  if (person.num_books < 2)
   	    person.num_books += 1
   	    book.status = "Out"
   	  end
   	else
-  		puts "That book is not currently in :("
+  		puts "That book is not available"
     end
   end
 
@@ -149,8 +156,6 @@ class Library
   def check_in book
   	if (book.status == "Out")
   	  book.status = "Available"
-  	  @checked_out[book] = nil
-  	  puts "You returned #{book}"
   	end
   end
 
