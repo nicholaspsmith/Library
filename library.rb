@@ -1,13 +1,16 @@
-class Book
-  attr_reader :title, :author, :description
-  attr_accessor :status
 
-  def initialize title author
-  	@title = title
-  	@author = author
-  end
+
+class Book
+	attr_reader :title, :author, :description
+	attr_accessor :status
+
+	def initialize(title, author)
+		@title = title
+		@author = author
+	end
 
 end
+
 
 class Library
 
@@ -16,8 +19,13 @@ class Library
   # Example
   #   @books = {"Moby Dick" => book_obj1, "Pride and Prejudice" => book_obj2}
   #
+  # create @checked_out hash that stores books that are checked out and by whome
+  #
+  # Example
+  #   @checked_out
   def initialize
   	@books = {}
+  	@checked_out = {}
   end
 
 
@@ -29,7 +37,7 @@ class Library
   #
   #
   #
-  def add title author
+  def add(title, author)
   	@books[title] = Book.new(title, author)
   end
 
