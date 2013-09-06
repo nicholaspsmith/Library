@@ -54,16 +54,26 @@ class Library
   end
 
   def check_out book, person
+  	has_overdue = false
+  	@books.each do |book|
+  	  		if book.person == person
+  	  			has_overdue = true;
+  	  		end
+  	  	end
   	if (book.status == "Available")
-  	  if (person.num_books < 2)
-  	    person.num_books += 1
-  	    book.status = "Checked out"
-  	    book.person = person
-  	    book.time_out = Time.now
-  	    book.time_due = Time.now + (7*24*60*60)
-  	  else
-  	  	puts "You already have 2 books checked out"
-  	  end
+  		if (!has_overdue)
+	  	  if (person.num_books < 2) ## and has no overdue books
+	  	    person.num_books += 1
+	  	    book.status = "Checked out"
+	  	    book.person = person
+	  	    book.time_out = Time.now
+	  	    book.time_due = Time.now + (7*24*60*60)
+	  	  else
+	  	  	puts "You already have 2 books checked out"
+	  	  end
+	  	else
+	  		puts "You have an overdue book"
+	  	end
   	else
   		puts "That book is not available"
     end
@@ -86,7 +96,7 @@ class Library
   	@books.each do |book|
   		if book.status != "Available"
   		  puts "#{book.title} is #{book.status.downcase} by #{book.person.f_name} #{book.person.l_name}"
-  		  ## print when it is due
+  		  puts "Due: #{book.time_due}"
   		end
   	end
   end
