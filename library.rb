@@ -24,6 +24,7 @@ class Book
 	@description = description
 	@person = nil
 	@ratings = {}
+	@has_extended = false;
   end
 
   # Give book a rating
@@ -47,7 +48,7 @@ class Book
   		value[0].times do 
   			print "*"
   		end
-  		pring "\n"
+  		print "\n"
   		if value[1].length > 0
   			puts "Review:"
   			puts value[1]
@@ -57,7 +58,7 @@ class Book
 end
 
 class Person
-	attr_accessor :num_books
+	attr_accessor :num_books, :has_extended
 	attr_reader :f_name, :l_name
 
 	# Create a person object
@@ -74,6 +75,7 @@ class Person
 		@f_name = f_name
 		@l_name = l_name
 		@num_books = 0
+		@has_extended = false
 	end
 end
 
@@ -219,10 +221,17 @@ require 'csv'
 
   # Schedule future checkout for a book that is already checked out
   def schedule_checkout book, person, date
+  	if book.status == "Checked out"
+  		##check out book in person's name when date == Time.n
+  	end
   end
 
   # Extend time by one week if no one has scheduled a future check-out
-  def extend
+  def extend book, person
+  	if book.status == "Checked out" and !person.has_extended
+	  	book.time_due += (7*24*60*60)
+	  	person.has_extended = true
+  	end
   end
 end
 
