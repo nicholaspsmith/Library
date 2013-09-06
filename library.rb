@@ -171,5 +171,14 @@ require 'csv'
   		end
   	end
   end
+
+  # Import books from .csv file
+  def import 
+  	File.open("books.csv").read.split("\n").each do |line|
+  		title, author, description, year_published, edition = line.split(" ")
+  		@books << Book.new(title, author, description, year_published, edition)
+  	end
+
+  end
 end
 
